@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void troca(int* vet, int start, int end, int* pivot){
+void swap(int* vet, int start, int end, int* pivot){
     int i = start, j = end, aux;
     while (j >= i){
         if (vet[i] > vet[*pivot]){
@@ -24,7 +24,7 @@ void quick(int* vet, int start, int len){
         return;
     }
     int pivot = (len+start)/2;
-    troca(vet, start, len-1, &pivot);
+    swap(vet, start, len-1, &pivot);
     printf("%d - %d - %d\n", start, len, pivot);
     quick(vet, start, pivot);
     quick(vet, pivot+1, len);
