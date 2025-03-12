@@ -38,6 +38,8 @@ int in(t_queue* queue, int elem){
 int out(t_queue* queue, int* elem){
     if (is_empty(queue)) return 0;
     queue->start = (queue->start+1)%queue->max;
+    queue->size--;
+    return 1;
 }
 
 void destroy(t_queue* queue){
