@@ -54,6 +54,26 @@ t_node* get_node_item(t_list* list, int elem){
     return aux;
 }
 
+int reverse(t_list* list){
+    if (is_empty(list)){
+        return 0;
+    }
+    t_node* next = NULL;
+    t_node* prev = NULL;
+    t_node* current = list->head;
+    
+    t_node* aux = list->head;
+    list->head = list->tail;
+    list->tail = aux;
+
+    while (current != NULL){
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+}
+
 int find(t_list* list, int elem){
     if (is_empty(list)){
         return 0;
@@ -139,13 +159,15 @@ t_node* peek_back(t_list* list){
 }
 
 t_node* pop_front(t_list *list){
-    remove_at(list, 0);
-    return peek_front(list);
+    t_node* front = list->head;
+    list->head = front->next;
+    return front;
 }
 
 t_node* pop_back(t_list *list){
-    remove_at(list, list->size--);
-    return peek_back(list);
+    t_node* back = list->tail;
+    list->tail = get_item_by_index(list, size(list)-2);
+    return back;
 }
 
 void print_list(t_list* list){
@@ -187,8 +209,7 @@ int main(int argc, char const *argv[]){
     insert(42, 3, list);
     insert(56, 10, list);
     print_list(list);
-    clear(list);
-    append(100, list);
+    reverse(list);
     print_list(list);
     return 0;
 }
