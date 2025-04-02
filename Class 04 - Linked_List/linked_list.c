@@ -74,6 +74,7 @@ int reverse(t_list* list){
     }
 }
 
+
 int find(t_list* list, int elem){
     if (is_empty(list)){
         return 0;
