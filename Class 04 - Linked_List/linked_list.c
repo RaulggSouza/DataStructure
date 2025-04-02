@@ -74,6 +74,36 @@ int reverse(t_list* list){
     }
 }
 
+int sort(t_list* list){
+    t_node* prev;
+    t_node* node = list->head;
+    while(node != NULL){
+        t_node* prev_min;
+        t_node* min = node;
+        t_node* aux = node->next;
+        while (aux != NULL){
+            if (aux->next->item < min->item){
+                prev_min = aux;
+                min = aux->next;
+                printf("%d", min->item);
+            }
+            aux = aux->next;
+        }
+        if (node == list->head && min != node){
+            t_node* n = list->head;
+            list->head = min;
+            min->next = n;
+        }else{
+            t_node* n = min->next;
+            prev->next = min;
+            min->next = node->next;
+            prev_min->next = node;
+            node->next = n;
+        }
+        prev = node;
+        node = node->next;
+    }
+}
 
 int find(t_list* list, int elem){
     if (is_empty(list)){
@@ -202,15 +232,16 @@ void clear(t_list* list){
 
 int main(int argc, char const *argv[]){
     t_list* list = create_list();
-    append(3, list); 
-    append(4, list);
-    append(5, list);
+    append(4, list); 
+    append(3, list);
     append(6, list);
+    append(5, list);
     insert(23, 0, list);
     insert(42, 3, list);
     insert(56, 10, list);
     print_list(list);
-    reverse(list);
+    // reverse(list);
+    sort(list);
     print_list(list);
     return 0;
 }
