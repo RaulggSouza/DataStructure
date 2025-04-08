@@ -70,7 +70,65 @@ int insert_ordered(t_list* list, int elem, t_node* node){
             insert_ordered(list, elem, node->next);
         }
     }
+    return 1;
 }
+
+void swap(t_node* current, t_node* prev, t_node* next){
+    if (current == NULL){
+        return;
+    }
+    next = current->next;
+    current->next = prev;
+    prev = current;
+    current = next;
+    swap(current, prev, next);
+}
+
+int reverse_list(t_list* list){
+    if (is_empty(list)){
+        return 0;
+    }
+    t_node* current = list->head;
+    t_node* prev = NULL;
+    t_node* next = NULL;
+    
+    t_node* aux = list->head;
+    list->head = list->tail;
+    list->tail = aux;
+    swap(current, prev, next);
+    return 1;
+}
+
+int remove_element(t_list* list, int elem, t_node* node){
+    if (node->item == elem && node == list->head){
+        t_node* aux = list->head;
+        list->head = node->next;
+        free(aux);
+    } else if (node->next->item == elem && node->next == list->tail){
+        free(node->next);
+        node->next = NULL;
+        list->tail = node;
+    } else {
+        if (node->next->item == elem){
+            t_node* aux = node->next->next;
+            free(node->next);
+            node->next = aux;
+        }else{
+            remove_element(list, elem, node->next);
+        }
+    }
+    return 1;
+}
+
+t_node* get_node_item(t_list* list, int elem, t_node* node){
+    if (is_empty(list)){
+        return NULL;
+    }
+    if (node->item == elem){
+        return node;
+    }
+    return get_node_item(list, elem, node->next);
+} 
 
 void print_list(t_list* list){
     t_node* node = list->head;
@@ -101,7 +159,8 @@ int main(int argc, char const *argv[]){
     append(7,list);
     append(9,list);
     append(11,list);
-    insert_ordered(list, 12, list->head);
+    print_list(list);
+    reverse_list(list);
     print_list(list);
     return 0;
 }
