@@ -27,6 +27,13 @@ int is_empty(t_queue* queue){
     return queue->size == 0;
 }
 
+int len(t_queue* queue){
+    int counter = 1, i = queue->start+1;
+    while(i != queue->start){
+
+    }
+}
+
 int in(t_queue* queue, int elem){
     if (is_full(queue)) return 0;
     queue->vet[queue->end] = elem;
