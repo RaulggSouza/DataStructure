@@ -7,10 +7,6 @@ typedef struct _node {
     struct _node* right;
 } t_node;
 
-typedef struct{
-
-} t_queue;
-
 typedef struct {
     t_node* root;
 } t_tree;
@@ -57,10 +53,6 @@ t_node* binary_search(t_node* parent_node, int item){
     }else{
         return binary_search(parent_node->right, item);
     }
-}
-
-void print_level(t_tree*){
-
 }
 
 t_node* search(t_tree* tree, int item){
@@ -113,31 +105,60 @@ int tree_height(t_tree* tree){
     return 0;
 }
 
-void insert_iterative(t_tree* tree, int item){
+// Exercicios: Completar funcoes abaixo:
+
+// Função para desalocar uma árvore
+void clear_rec(t_node *node) {
+}
+
+// Função para buscar um elemento na árvore (versão não recursiva)
+t_node* search_v2(t_tree *tree, int item) {
+    return NULL;
+}
+
+// Função para inserir um elemento em uma árvore (versão não recursiva)
+void insert_v2(t_tree *tree, int item) {
     t_node* node = tree->root;
+    t_node* parent_node;
     while(node != NULL){
+        parent_node = node;
         if (item < node->item){
-            if (node->left == NULL){
-                node->left = create_node(item);
-            }
             node = node->left;
-        } else if (item > node->item){
-            if (node->right == NULL){
-                node->right = create_node(item);
-            }
+        }else if (item > node->item){
             node = node->right;
         }
     }
+    node = create_node(item);
+    if (node->item < parent_node->item){
+        parent_node->left = node;
+    }else if (node->item > parent_node->item){
+        parent_node->right = node;
+    }
 }
 
-void remove_from_tree(t_tree* tree, int item){}
+// Função para remover um elemento da árvore (versão não recursiva)
+void remove_from_tree_v2(t_tree *tree, int item) {
+}
 
-int get_node_height(t_node* node){}
+// Função para remover um elemento da árvore (versão recursiva)
+void remove_from_tree(t_tree *tree, int item) {
+}
 
-t_node* get_min_item(t_tree* tree){}
+// Função para encontrar o menor elemento da árvore
 
-t_node* get_max_item(t_tree* tree){}
 
+// Função para encontrar o menor elemento da árvore
+
+
+// Função para retornar a soma dos elementos da árvore
+
+
+// Função para retornar a quantidade de nós folha
+
+
+// Função para retornar a altura da árvore
+int height(t_node *p){
+}
 
 
 void destroy_nodes(t_node* node){
@@ -158,6 +179,17 @@ void destroy_tree(t_tree* tree){
 }
 
 int main(int argc, char const *argv[]){
-    
+    t_node* tree = create_tree();
+
+    t_node* node_a = create_node(36);
+    t_node* node_b = create_node(12);
+    t_node* node_c = create_node(6);
+    t_node* node_d = create_node(24);
+    t_node* node_f = create_node(64);
+    t_node* node_g = create_node(55);
+    t_node* node_h = create_node(69);
+
+
+
     return 0;
 }

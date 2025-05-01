@@ -1,30 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct _node {
-    char item;
-    struct _node* left;
+typedef struct _node{
+    int item;
     struct _node* right;
-} t_node;
+    struct _node* left; 
+}t_node;
 
-typedef struct {
+
+typedef struct{
     t_node* root;
-} t_binary_tree;
+} t_tree;
 
-t_node* create_node(char item) {
+
+t_tree* create_tree(){
+    t_tree* tree = (t_tree*) malloc(sizeof(t_tree));
+    tree->root = NULL;
+    return tree;
+}
+
+t_node* create_node(int item){
     t_node* node = (t_node*) malloc(sizeof(t_node));
     node->item = item;
     node->left = NULL;
     node->right = NULL;
-
     return node;
 }
 
-t_binary_tree *create_tree() {
-    t_binary_tree* tree = (t_binary_tree*) malloc(sizeof(t_binary_tree));
-    tree->root = NULL;
-
-    return tree;
+int is_empty(t_tree* tree){
+    return tree->root == NULL;
 }
 
 void insert_right(t_node* node, t_node* parent_node){
@@ -73,7 +77,7 @@ int count_side(t_node* node){
     return 0;
 }
 
-int tree_height(t_binary_tree* tree){
+int tree_height(t_tree* tree){
     if (tree) {
         return count_side(tree->root);
     }
@@ -89,7 +93,7 @@ void destroy_nodes(t_node* node){
     }
 }
 
-void destroy_tree(t_binary_tree* tree){
+void destroy_tree(t_tree* tree){
     if (tree != NULL) {
         destroy_nodes(tree->root);
     }
@@ -98,8 +102,9 @@ void destroy_tree(t_binary_tree* tree){
 
 }
 
+
 int main(int argc, char const *argv[]) {
-    t_binary_tree*tree = create_tree();
+    t_tree *tree = create_tree();
     
     t_node* node_a = create_node('A');
     t_node* node_b = create_node('B');
