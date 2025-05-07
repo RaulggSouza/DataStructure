@@ -101,7 +101,6 @@ int tree_height(t_tree* tree){
     if (tree) {
         return count_side(tree->root);
     }
-    
     return 0;
 }
 
@@ -109,11 +108,29 @@ int tree_height(t_tree* tree){
 
 // Função para desalocar uma árvore
 void clear_rec(t_node *node) {
+    if (node == NULL){
+        return;
+    }
+    clear_rec(node->left);
+    clear_rec(node->right);
+    free(node);
+}
+
+//Se for para desalocar a árvore
+void clear(t_tree* tree){
+    clear_rec(tree->root);
+    free(tree);
 }
 
 // Função para buscar um elemento na árvore (versão não recursiva)
 t_node* search_v2(t_tree *tree, int item) {
-    return NULL;
+    t_node* node = tree->root;
+    while(node != NULL && node->item != item){
+        if (item < node->item){
+            node = node->left;
+        }
+    }
+    return node;
 }
 
 // Função para inserir um elemento em uma árvore (versão não recursiva)
@@ -141,14 +158,62 @@ void remove_from_tree_v2(t_tree *tree, int item) {
 }
 
 // Função para remover um elemento da árvore (versão recursiva)
-void remove_from_tree(t_tree *tree, int item) {
+t_node* remove_node(t_node* node, int item) {
+    if (node == NULL){
+        return NULL;
+    }
+    if (node->item == item){
+        if (node->left == NULL && node->right == NULL){
+            free(node);
+            return NULL;
+        }else if(node->left != NULL && node->right != NULL){
+            t_node* prev = node;
+            t_node* replacer = find_big(node->left);
+            node = find_big(node->left);
+            replacer = NULL;
+            free(prev);
+            return node;
+        } else {
+            t_node* remaining_node = (node->left != NULL ? node->left : node->right);
+            free(node);
+            return remaining_node;
+        }
+    }
+    if (item < node->item){
+        node->left = remove_node(node->left, item);
+    } else {
+        node->right = remove_node(node->right, item);
+    }
 }
 
+void remove_from_tree(t_tree* tree, int item){
+    remove_node(tree->root, item);
+}
+
+// Função para encontrar o maior elemento da árvore
+// t_node* find_big(t_node* node){
+//     if (node->right == NULL){
+//         return node;
+//     } else {
+//         return find_big(node->right);
+//     }
+// }
+
+t_node* biggest(t_tree* tree) {
+    return find_big(tree->root);
+}
 // Função para encontrar o menor elemento da árvore
+t_node* find_smallest(t_node* node){
+    if (node->left == NULL){
+        return node;
+    } else {
+        return find_smallest(node->left);
+    }
+}
 
-
-// Função para encontrar o menor elemento da árvore
-
+t_node* smallest(t_tree* tree) {
+    return find_smallest(tree->root);
+}
 
 // Função para retornar a soma dos elementos da árvore
 
@@ -179,17 +244,32 @@ void destroy_tree(t_tree* tree){
 }
 
 int main(int argc, char const *argv[]){
-    t_node* tree = create_tree();
+    t_tree* tree = create_tree();
 
-    t_node* node_a = create_node(36);
-    t_node* node_b = create_node(12);
-    t_node* node_c = create_node(6);
-    t_node* node_d = create_node(24);
-    t_node* node_f = create_node(64);
-    t_node* node_g = create_node(55);
-    t_node* node_h = create_node(69);
+    insert(tree, 36);
+    insert(tree, 12);
+    insert(tree, 6);
+    insert(tree, 3);
+    insert(tree, 9);
+    insert(tree, 24);
+    insert(tree, 64);
+    insert(tree, 55);
+    insert(tree, 69);
+    
+    pre_order(tree->root);
 
+    // t_node* node = search_v2(tree, 6);
+    // if (node == NULL) {
+    //     printf("\nEmpty node");
+    // }else{
+    //     printf("\n%d", node->item);
+    // }
 
+    remove_from_tree(tree, 69);
+    remove_from_tree(tree, 64);
 
+    printf("\n");
+
+    pre_order(tree->root);
     return 0;
 }
